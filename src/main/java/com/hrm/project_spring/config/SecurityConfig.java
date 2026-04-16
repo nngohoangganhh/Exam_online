@@ -1,0 +1,79 @@
+package com.hrm.project_spring.config;
+
+import com.hrm.project_spring.security.JwtAuthenticationFilter;
+import com.hrm.project_spring.security.OAuth2AuthenticationSuccessHandler;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
+import java.util.Arrays;
+
+@Configuration
+@EnableWebSecurity
+@EnableMethodSecurity
+@RequiredArgsConstructor
+public class SecurityConfig {
+
+    private final JwtAuthenticationFilter jwtAuthFilter;
+    private final AuthenticationProvider authenticationProvider;
+    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+    .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+    .csrf(csrf -> csrf.disable())
+    .authorizeHttpRequests(auth -> auth
+        .requestMatchers(
+            "/api/auth/login",
+            "/api/auth/register",
+            "/api/auth/verify-email",
+            "/api/auth/google",
+            "/oauth2/**",
+            "/login/**"
+        ).permitAll()
+        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+        .anyRequest().authenticated()
+    )
+    .exceptionHandling(ex -> ex
+        .authenticationEntryPoint((req, res, e) ->
+            res.sendError(HttpServletResponse.SC_UNAUTHORIZED)
+        )
+    )
+    .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+    .authenticationProvider(authenticationProvider)
+    .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+    .oauth2Login(oauth2 -> oauth2
+        .successHandler(oAuth2AuthenticationSuccessHandler)
+    );
+    return http.build();
+
+    }
+    @Bean
+    public UrlBasedCorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOriginPatterns(Arrays.asList("*")); // Dùng allowedOriginPatterns thay vì allowedOrigins khi cần credentials
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "authorization", "Content-Type", "content-type", "x-auth-token", "*"));
+        configuration.setExposedHeaders(Arrays.asList("x-auth-token", "Authorization"));
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+}
