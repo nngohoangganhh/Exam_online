@@ -21,10 +21,8 @@ public interface ExamRepository extends JpaRepository<Exam, Long> {
     """)
     Optional<Exam> findByIdWithStudents(@Param("id") Long id);
 
-
     @Query("SELECT e FROM Exam e JOIN e.students s WHERE s.id = :userId")
     Page<Exam> findByStudentId(@Param("userId") Long userId, Pageable pageable);
-
 
     long countByStatus(String status);
 }

@@ -2,18 +2,14 @@ package com.hrm.project_spring.controller;
 
 import com.hrm.project_spring.dto.common.ApiResponse;
 import com.hrm.project_spring.dto.common.PageResponse;
-import com.hrm.project_spring.dto.permission.PermissionResponse;
-import com.hrm.project_spring.dto.role.RoleRequest;
-import com.hrm.project_spring.dto.role.RoleResponse;
-import com.hrm.project_spring.service.PermissionService;
+import com.hrm.project_spring.dto.result.role.RoleRequest;
+import com.hrm.project_spring.dto.result.role.RoleResponse;
 import com.hrm.project_spring.service.RoleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Set;
 
 @RequestMapping("/api/roles")
 @RestController

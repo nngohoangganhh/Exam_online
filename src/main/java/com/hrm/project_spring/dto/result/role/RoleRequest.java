@@ -1,4 +1,4 @@
-package com.hrm.project_spring.dto.role;
+package com.hrm.project_spring.dto.result.role;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
