@@ -32,6 +32,7 @@ public class Test {
     private Integer durationMinutes;
     @Column(name = "total_score")
     private Integer totalScore;
+
     @Builder.Default
     @ManyToMany
     @JoinTable(

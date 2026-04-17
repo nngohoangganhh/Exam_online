@@ -31,8 +31,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
-
-
     // all
     public PageResponse<UserResponseDto> getAllUsers(int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
@@ -114,7 +112,8 @@ public class UserService {
                     .collect(Collectors.toList());
         }
         if (user.getRoles() != null) {
-            permissionCode = user.getRoles().stream()
+            permissionCode = user.getRoles()
+                    .stream()
                     .filter(r -> r.getPermissions() != null)
                     .flatMap(r -> r.getPermissions().stream())
                     .map(Permission::getCode)
@@ -128,8 +127,8 @@ public class UserService {
                     .roles(roleCode)
                     .permissions(permissionCode)
                     .build();
-        }
-        private UserResponseDto mapTo(User user) {
+    }
+    private UserResponseDto mapTo(User user) {
             String roleName = null;
             if (user.getRoles() != null && !user.getRoles().isEmpty()) {
                 roleName = user.getRoles().iterator().next().getCode();
@@ -142,5 +141,5 @@ public class UserService {
                     .roleName(roleName)
                     .build();
         }
-    }
+}
 

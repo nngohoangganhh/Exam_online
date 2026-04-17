@@ -36,7 +36,6 @@ public class ExamAttemptController {
                 .data(attemptService.startAttempt(testId, authentication.getName()))
                 .build());
     }
-
     @PreAuthorize("hasAuthority('EXAM:SUBMIT')")
     @PostMapping("/{attemptId}/submit")
     public ResponseEntity<ApiResponse<ExamAttemptSubmit>> submitAttempt(
@@ -50,7 +49,6 @@ public class ExamAttemptController {
                 .data(attemptService.submitAttempt(attemptId, authentication.getName(), request))
                 .build());
     }
-
     @PreAuthorize("hasAuthority('EXAM:START')")
     @GetMapping("/my")
     public ResponseEntity<ApiResponse<PageResponse<AttemptSummaryResponse>>> getMyAttempts(
@@ -64,8 +62,6 @@ public class ExamAttemptController {
                 .data(attemptService.getMyAttempts(authentication.getName(), pageNo, pageSize))
                 .build());
     }
-
-
     @PreAuthorize("hasAuthority('EXAM:START')")
     @GetMapping("/{attemptId}")
     public ResponseEntity<ApiResponse<AttemptDetailResponse>> getAttemptDetail(
@@ -78,8 +74,6 @@ public class ExamAttemptController {
                 .data(attemptService.getAttemptDetail(attemptId, authentication.getName()))
                 .build());
     }
-
-
     @PreAuthorize("hasAuthority('EXAM:READ')")
     @GetMapping("/test/{testId}")
     public ResponseEntity<ApiResponse<PageResponse<AttemptSummaryResponse>>> getAttemptsByTest(
@@ -93,7 +87,6 @@ public class ExamAttemptController {
                 .data(attemptService.getAttemptsByTest(testId, pageNo, pageSize))
                 .build());
     }
-
     @PreAuthorize("hasAuthority('EXAM:READ')")
     @GetMapping("/exam/{examId}")
     public ResponseEntity<ApiResponse<PageResponse<AttemptSummaryResponse>>> getAttemptsByExam(
@@ -107,7 +100,6 @@ public class ExamAttemptController {
                 .data(attemptService.getAttemptsByExam(examId, pageNo, pageSize))
                 .build());
     }
-
     @PreAuthorize("hasAuthority('EXAM:READ')")
     @GetMapping("/{attemptId}/admin")
     public ResponseEntity<ApiResponse<AttemptDetailResponse>> getAttemptDetailAdmin(

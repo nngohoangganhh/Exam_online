@@ -34,7 +34,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 || path.equals("/api/auth/login")
                 || path.equals("/api/auth/register")
                 || path.equals("/api/auth/verify-email");
-
     }
     @Override
     protected void doFilterInternal(
@@ -42,21 +41,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
-
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         final String username;
-
         // 1. Kiểm tra sự tồn tại của Header Authorization
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
-
         try {
             // 2. Trích xuất token và loại bỏ khoảng trắng thừa
             jwt = authHeader.substring(7).trim();
-
             // 3. Kiểm tra xem token có thực sự tồn tại sau chữ "Bearer " hay không
             // Nếu token là chuỗi rỗng hoặc chữ "null" (lỗi từ frontend), bỏ qua filter này
             if (jwt.isEmpty() || jwt.equalsIgnoreCase("null")) {
@@ -64,14 +59,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request, response);
                 return;
             }
-
             // 4. Giải mã username từ token
             username = jwtService.extractUsername(jwt);
-
             // 5. Nếu có username và chưa được xác thực trong SecurityContext
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-
                 // 6. Kiểm tra tính hợp lệ của token
                 if (jwtService.isTokenValid(jwt, userDetails)) {
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
@@ -80,7 +72,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                             userDetails.getAuthorities()
                     );
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
                     // Lưu thông tin xác thực vào hệ thống
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                     log.info("Authenticated user: {}", username);

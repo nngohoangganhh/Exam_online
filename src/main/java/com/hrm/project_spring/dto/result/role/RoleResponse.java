@@ -1,4 +1,4 @@
-package com.hrm.project_spring.dto.role;
+package com.hrm.project_spring.dto.result.role;
 
 import com.hrm.project_spring.dto.permission.PermissionResponse;
 import lombok.*;

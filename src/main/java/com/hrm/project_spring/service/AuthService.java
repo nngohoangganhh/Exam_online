@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -53,7 +54,7 @@ public class AuthService {
                 .status("ACTIVE")
                 .build();
         userRepository.save(user);
-        var jwtToken = jwtService.generateToken(user);
+        var jwtToken = jwtService.generateToken((UserDetails) user);
         return AuthResponse.builder()
                 .token(jwtToken)
                 .message("User registered successfully")
@@ -69,7 +70,7 @@ public class AuthService {
         );
         var user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, " USER NOT FOUND"));
-        var jwtToken = jwtService.generateToken(user);
+        var jwtToken = jwtService.generateToken((UserDetails) user);
         return AuthResponse.builder()
                 .token(jwtToken)
                 .message("User logged in successfully")
@@ -110,7 +111,7 @@ public class AuthService {
                         return userRepository.save(newUser);
                     }));
 
-            String jwtToken = jwtService.generateToken(user);
+            String jwtToken = jwtService.generateToken((UserDetails) user);
             return AuthResponse.builder()
                     .token(jwtToken)
                     .message("Đăng nhập Google thành công")
@@ -165,8 +166,6 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
         userRepository.save(user);
     }
-
-
 
     public UserResponse updateProfile(UpdateProfileRequest request) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();

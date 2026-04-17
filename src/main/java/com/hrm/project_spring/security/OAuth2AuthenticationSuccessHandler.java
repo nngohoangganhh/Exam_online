@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -19,11 +20,9 @@ import java.util.Collections;
 @Component
 @RequiredArgsConstructor
 public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccessHandler {
-
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final JwtService jwtService;
-
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response,
@@ -39,7 +38,6 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
             response.sendRedirect("http://localhost:3000/login?error=email_not_found");
             return;
         }
-
         // 1. Tìm user theo providerId + provider
         User user = userRepository.findByProviderIdAndProvider(googleId, "GOOGLE")
             .orElse(null);
@@ -76,7 +74,7 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
             }
         }
 
-        String token = jwtService.generateToken(user);
+        String token = jwtService.generateToken((UserDetails) user);
         
         String targetUrl = "http://localhost:3000/login?token=" + token;
         response.sendRedirect(targetUrl);

@@ -2,8 +2,8 @@ package com.hrm.project_spring.service;
 
 import com.hrm.project_spring.dto.common.PageResponse;
 import com.hrm.project_spring.dto.permission.PermissionResponse;
-import com.hrm.project_spring.dto.role.RoleRequest;
-import com.hrm.project_spring.dto.role.RoleResponse;
+import com.hrm.project_spring.dto.result.role.RoleRequest;
+import com.hrm.project_spring.dto.result.role.RoleResponse;
 import com.hrm.project_spring.entity.Permission;
 import com.hrm.project_spring.entity.Role;
 import com.hrm.project_spring.repository.PermissionRepository;
@@ -17,7 +17,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service

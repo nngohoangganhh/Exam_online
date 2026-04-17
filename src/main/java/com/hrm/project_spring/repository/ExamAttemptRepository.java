@@ -14,35 +14,18 @@ import java.util.Optional;
 @Repository
 public interface ExamAttemptRepository extends JpaRepository<ExamAttempt, Long> {
     Page<ExamAttempt> findByUserId(Long userId, Pageable pageable);
-
-
     Page<ExamAttempt> findByTestId(Long testId, Pageable pageable);
-
-
     Optional<ExamAttempt> findByIdAndUserId(Long attemptId, Long userId);
-
-
     Optional<ExamAttempt> findFirstByUserIdAndTestIdOrderByIdDesc(Long userId, Long testId);
-
     boolean existsByUserIdAndTestIdAndSubmitTimeIsNotNull(Long userId, Long testId);
-
-
     @Query("SELECT a FROM ExamAttempt a WHERE a.test.exam.id = :examId")
     Page<ExamAttempt> findByExamId(@Param("examId") Long examId, Pageable pageable);
-
-
     @Query("SELECT a FROM ExamAttempt a WHERE a.user.id = :userId AND a.test.exam.id = :examId")
     Page<ExamAttempt> findByUserIdAndExamId(@Param("userId") Long userId,
                                              @Param("examId") Long examId,
                                              Pageable pageable);
-
-
     long countByUserIdAndSubmitTimeIsNotNull(Long userId);
-
-
     long countByUserId(Long userId);
-
-
     @Query("SELECT AVG(a.score) FROM ExamAttempt a WHERE a.user.id = :userId AND a.submitTime IS NOT NULL")
     Double findAverageScoreByUserId(@Param("userId") Long userId);
 }
