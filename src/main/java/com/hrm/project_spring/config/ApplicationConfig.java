@@ -1,6 +1,7 @@
 package com.hrm.project_spring.config;
 
 import com.hrm.project_spring.repository.UserRepository;
+import com.hrm.project_spring.security.CustomUserPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +22,8 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> (org.springframework.security.core.userdetails.UserDetails) userRepository.findByUsername(username)
+        return username -> userRepository.findByUsername(username)
+                .map(CustomUserPrincipal::new)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
     @Bean
