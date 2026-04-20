@@ -99,7 +99,7 @@ public class TestService {
         if (request.getExamId() != null) {
              Resource resource = resourceRepository.findById(request.getExamId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Exam not found"));
-             test.setResource(Resource);
+             test.setResource(resource);
         }
         test.setTitle(request.getTitle());
         test.setDurationMinutes(request.getDurationMinutes());

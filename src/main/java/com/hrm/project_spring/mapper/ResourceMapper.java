@@ -10,8 +10,7 @@ import com.hrm.project_spring.entity.User;
 public class ResourceMapper {
     public static ExamListResponse toListResponse(Resource resource) {
         return ExamListResponse.builder()
-                .id(resource.getId())
-                .name(resource.getName())
+
                 .startTime(resource.getStartTime())
                 .endTime(resource.getEndTime())
                 .status(resource.getStatus())
@@ -20,14 +19,14 @@ public class ResourceMapper {
 
     public static ExamDetailResponse toDetailResponse(Resource resource) {
         return ExamDetailResponse.builder()
-                .id(exam.getId())
-                .name(exam.getName())
-                .description(exam.getDescription())
-                .status(exam.getStatus())
-                .startTime(exam.getStartTime())
-                .endTime(exam.getEndTime())
-                .createdAt(exam.getCreatedAt())
-                .createdBy(toUser(exam.getCreatedBy()))
+
+
+                .description(resource.getDescription())
+                .status(resource.getStatus())
+                .startTime(resource.getStartTime())
+                .endTime(resource.getEndTime())
+                .createdAt(resource.getCreatedAt())
+                .createdBy(toUser(resource.getCreatedBy()))
 //                .students(
 //                        exam.getStudents().stream()
 //                                .map(ResourceMapper::toUser)
