@@ -16,7 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
-public class User {
+public class User extends  BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,13 +32,10 @@ public class User {
 
     private String fullName;
     private String status;
-
+    //Outh2
     private String provider;
     private String providerId;
     private Boolean emailVerified;
-
-    @CreationTimestamp
-    private LocalDateTime createdAt;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -51,67 +48,3 @@ public class User {
 
 
 }
-//
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-//        if (roles == null || roles.isEmpty()) {
-//            return Set.of(new SimpleGrantedAuthority("ROLE_USER"));
-//        }
-//        for (Role role : roles) {
-//
-//            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getCode()));
-//
-//            if (role.getPermissions() != null) {
-//                role.getPermissions().stream()
-//                    .map(permission -> new SimpleGrantedAuthority(permission.getCode()))
-//                    .forEach(authorities::add);
-//            }
-//        }
-//
-//        return authorities;
-//    }
-//
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (!(o instanceof User)) return false;
-//        User user = (User) o;
-//        return id != null && id.equals(user.id);
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return getClass().hashCode();
-//    }
-//
-//    @Override
-//    public String getPassword() {
-//        return password;
-//    }
-//
-//    @Override
-//    public String getUsername() {
-//        return username;
-//    }
-//
-//    @Override
-//    public boolean isAccountNonExpired() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isAccountNonLocked() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isCredentialsNonExpired() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isEnabled() {
-//        return "ACTIVE".equalsIgnoreCase(status) || status == null;
-//    }
-//}

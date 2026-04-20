@@ -3,22 +3,22 @@ package com.hrm.project_spring.mapper;
 import com.hrm.project_spring.dto.exam.ExamDetailResponse;
 import com.hrm.project_spring.dto.exam.ExamListResponse;
 import com.hrm.project_spring.dto.user.UserResponseDto;
-import com.hrm.project_spring.entity.Exam;
+import com.hrm.project_spring.entity.Resource;
 import com.hrm.project_spring.entity.User;
 
 
-public class ExamMapper {
-    public static ExamListResponse toListResponse(Exam exam) {
+public class ResourceMapper {
+    public static ExamListResponse toListResponse(Resource resource) {
         return ExamListResponse.builder()
-                .id(exam.getId())
-                .name(exam.getName())
-                .startTime(exam.getStartTime())
-                .endTime(exam.getEndTime())
-                .status(exam.getStatus())
+                .id(resource.getId())
+                .name(resource.getName())
+                .startTime(resource.getStartTime())
+                .endTime(resource.getEndTime())
+                .status(resource.getStatus())
                 .build();
     }
 
-    public static ExamDetailResponse toDetailResponse(Exam exam) {
+    public static ExamDetailResponse toDetailResponse(Resource resource) {
         return ExamDetailResponse.builder()
                 .id(exam.getId())
                 .name(exam.getName())
@@ -30,7 +30,7 @@ public class ExamMapper {
                 .createdBy(toUser(exam.getCreatedBy()))
 //                .students(
 //                        exam.getStudents().stream()
-//                                .map(ExamMapper::toUser)
+//                                .map(ResourceMapper::toUser)
 //                                .toList()
 //                )
                 .build();

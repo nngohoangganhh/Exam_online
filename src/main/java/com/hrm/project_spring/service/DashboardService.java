@@ -3,7 +3,6 @@ package com.hrm.project_spring.service;
 import com.hrm.project_spring.dto.dashboard.AdminDashboardResponse;
 import com.hrm.project_spring.dto.dashboard.StudentDashboardResponse;
 import com.hrm.project_spring.dto.exam.MyExamResponse;
-import com.hrm.project_spring.entity.Test;
 import com.hrm.project_spring.entity.User;
 import com.hrm.project_spring.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,7 @@ import java.util.stream.Collectors;
 public class DashboardService {
 
     private final UserRepository userRepository;
-    private final ExamRepository examRepository;
+    private final ResourceRepository resourceRepository;
     private final QuestionRepository questionRepository;
     private final ExamAttemptRepository attemptRepository;
 
@@ -32,10 +31,10 @@ public class DashboardService {
     @Transactional(readOnly = true)
     public AdminDashboardResponse getAdminDashboard() {
         long totalUsers = userRepository.count();
-        long totalExams = examRepository.count();
+        long totalExams = resourceRepository.count();
         long totalQuestions = questionRepository.count();
         long totalAttempts = attemptRepository.count();
-        long openExams = examRepository.countByStatus("OPEN");
+        long openExams = resourceRepository.countByStatus("OPEN");
 
         return AdminDashboardResponse.builder()
                 .totalUsers(totalUsers)
@@ -55,7 +54,7 @@ public class DashboardService {
         long totalAttempts = attemptRepository.countByUserId(user.getId());
         long submittedAttempts = attemptRepository.countByUserIdAndSubmitTimeIsNotNull(user.getId());
         Double averageScore = attemptRepository.findAverageScoreByUserId(user.getId());
-        long totalExamsAssigned = examRepository.findByStudentId(user.getId(), PageRequest.of(0, Integer.MAX_VALUE)).getTotalElements();
+        long totalExamsAssigned = resourceRepository.findByStudentId(user.getId(), PageRequest.of(0, Integer.MAX_VALUE)).getTotalElements();
 
         return StudentDashboardResponse.builder()
                 .totalAttempts(totalAttempts)
@@ -73,7 +72,7 @@ public class DashboardService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tài khoản không tồn tại"));
 
         Page<com.hrm.project_spring.entity.Exam> exams =
-                examRepository.findByStudentId(user.getId(), PageRequest.of(0, 100));
+                resourceRepository.findByStudentId(user.getId(), PageRequest.of(0, 100));
 
         return exams.getContent().stream()
                 .map(exam -> {

@@ -4,11 +4,11 @@ import com.hrm.project_spring.dto.common.PageResponse;
 import com.hrm.project_spring.dto.test.AssignQuestionsRequest;
 import com.hrm.project_spring.dto.test.TestRequest;
 import com.hrm.project_spring.dto.test.TestResponse;
-import com.hrm.project_spring.entity.Exam;
+import com.hrm.project_spring.entity.Resource;
 import com.hrm.project_spring.entity.Question;
 import com.hrm.project_spring.entity.Test;
 import com.hrm.project_spring.entity.User;
-import com.hrm.project_spring.repository.ExamRepository;
+import com.hrm.project_spring.repository.ResourceRepository;
 import com.hrm.project_spring.repository.QuestionRepository;
 import com.hrm.project_spring.repository.TestRepository;
 import com.hrm.project_spring.repository.UserRepository;
@@ -32,7 +32,7 @@ import java.util.List;
 public class TestService {
 
     private final TestRepository testRepository;
-    private final ExamRepository examRepository;
+    private final ResourceRepository resourceRepository;
     private final UserRepository userRepository;
     private final QuestionRepository questionRepository;
 
@@ -69,9 +69,9 @@ public class TestService {
           if (request.getDurationMinutes() == null || request.getDurationMinutes() <= 0 || request.getDurationMinutes() >180) {
              throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "  thời gian làm bài của bài thi sẽ không được quá 180 phút");
          }
-        Exam exam = null;
+        com.hrm.project_spring.entity.Resource resource = null;
         if (request.getExamId() != null) {
-            exam = examRepository.findById(request.getExamId())
+            resource = resourceRepository.findById(request.getExamId())
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Exam not found"));
         }
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -85,7 +85,7 @@ public class TestService {
                 .title(request.getTitle())
                 .durationMinutes(request.getDurationMinutes())
                 .totalScore(request.getTotalScore())
-                .exam(exam)
+                .resource(resource)
                 .createdBy(user)
                 .createdAt(LocalDateTime.now())
                 .build();
@@ -97,9 +97,9 @@ public class TestService {
                 -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Test not found"));
 
         if (request.getExamId() != null) {
-             Exam exam = examRepository.findById(request.getExamId())
+             Resource resource = resourceRepository.findById(request.getExamId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Exam not found"));
-             test.setExam(exam);
+             test.setResource(Resource);
         }
         test.setTitle(request.getTitle());
         test.setDurationMinutes(request.getDurationMinutes());
@@ -152,7 +152,7 @@ public class TestService {
 
         return TestResponse.builder()
                 .id(test.getId())
-                .examId(test.getExam() != null ? test.getExam().getId() : null)
+                .examId(test.getResource() != null ? test.getResource().getId() : null)
                 .title(test.getTitle())
                 .durationMinutes(test.getDurationMinutes())
                 .totalScore(test.getTotalScore())

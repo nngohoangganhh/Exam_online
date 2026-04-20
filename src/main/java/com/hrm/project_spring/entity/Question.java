@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -12,12 +13,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "questions")
-public class Question {
+public class Question extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,8 +30,7 @@ public class Question {
     @ManyToOne
     @JoinColumn(name = "created_by")
     private User createdBy;
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
@@ -40,7 +40,7 @@ public class Question {
         answers.add(answer);
         answer.setQuestion(this);
     }
-    
+
     public void removeAnswer(Answer answer) {
         answers.remove(answer);
         answer.setQuestion(null);

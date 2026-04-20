@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,19 +15,19 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "tests")
-public class Test {
+public class Test extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "exam_id", nullable = false)
-    private Exam exam;
+    @JoinColumn(name = "resource_id", nullable = false)
+    private Resource resource;
     private String title;
     @Column(name = "duration_minutes")
     private Integer durationMinutes;
@@ -43,6 +44,5 @@ public class Test {
     @ManyToOne
     @JoinColumn(name = "created_by")
     private User createdBy;
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+
 }
