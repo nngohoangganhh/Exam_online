@@ -132,7 +132,7 @@ public class TestService {
         return mapToResponse(saved);
     }
     public TestResponse mapToResponse(Test test) {
-        // Map questions + answers (không expose isCorrect)
+
         List<TestResponse.QuestionDto> questionDtos = test.getQuestions() == null ? List.of() :
             test.getQuestions().stream().map(q -> {
                 List<TestResponse.AnswerDto> answerDtos = q.getAnswers() == null ? List.of() :
@@ -141,7 +141,8 @@ public class TestService {
                             .id(a.getId())
                             .content(a.getContent())
                             .build()
-                    ).toList();
+                            ).toList();
+
                 return TestResponse.QuestionDto.builder()
                     .id(q.getId())
                     .content(q.getContent())
@@ -152,7 +153,7 @@ public class TestService {
 
         return TestResponse.builder()
                 .id(test.getId())
-                .examId(test.getResource() != null ? test.getResource().getId() : null)
+                .examId(Long.valueOf(test.getResource() != null ? test.getResource().getId() : null))
                 .title(test.getTitle())
                 .durationMinutes(test.getDurationMinutes())
                 .totalScore(test.getTotalScore())

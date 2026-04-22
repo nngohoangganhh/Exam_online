@@ -1,12 +1,12 @@
 package com.hrm.project_spring.service;
 
 import com.hrm.project_spring.dto.common.PageResponse;
-import com.hrm.project_spring.dto.exam.ExamAttemptStart;
+import com.hrm.project_spring.dto.resource.ExamAttemptStart;
 import com.hrm.project_spring.dto.result.AttemptDetailResponse;
 import com.hrm.project_spring.dto.result.AttemptSubmitRequest;
 import com.hrm.project_spring.dto.result.AttemptSummaryResponse;
 import com.hrm.project_spring.dto.result.StudentAnswerDetailResponse;
-import com.hrm.project_spring.dto.exam.ExamAttemptSubmit;
+import com.hrm.project_spring.dto.resource.ExamAttemptSubmit;
 import com.hrm.project_spring.dto.result.StudentAnswerSubmitRequest;
 import com.hrm.project_spring.entity.*;
 import com.hrm.project_spring.repository.*;
@@ -226,8 +226,8 @@ public class ExamAttemptService {
                 .id(attempt.getId())
                 .testId(attempt.getTest().getId())
                 .testTitle(attempt.getTest().getTitle())
-                .examId(attempt.getTest().getExam() != null ? attempt.getTest().getExam().getId() : null)
-                .examName(attempt.getTest().getExam() != null ? attempt.getTest().getExam().getName() : null)
+                .examId(Long.valueOf(attempt.getTest().getResource() != null ? attempt.getTest().getResource().getId() : null))
+                .examName(attempt.getTest().getResource() != null ? attempt.getTest().getResource().getThumbnail() : null)
                 .startTime(attempt.getStartTime())
                 .submitTime(attempt.getSubmitTime())
                 .score(attempt.getScore())

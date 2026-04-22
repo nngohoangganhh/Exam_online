@@ -1,4 +1,4 @@
-package com.hrm.project_spring.dto.exam;
+package com.hrm.project_spring.dto.resource;
 
 import lombok.Builder;
 import lombok.Data;

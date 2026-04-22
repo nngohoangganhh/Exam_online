@@ -14,8 +14,11 @@ import java.util.List;
 @RequestMapping("/api/questions/{questionId}/answers")
 @RequiredArgsConstructor
 public class AnswerController {
-    private final AnswerService answerService;
-    @PreAuthorize("hasAuthority('QUESTION:READ')")
+    private final AnswerService answerService ;
+
+
+
+
     @GetMapping
     public ResponseEntity<ApiResponse<List<AnswerResponse>>> getAnswersByQuestion(
             @PathVariable Long questionId,
@@ -71,9 +74,7 @@ public class AnswerController {
     }
     @PreAuthorize("hasAuthority('QUESTION:DELETE')")
     @DeleteMapping("/{answerId}")
-    public ResponseEntity<ApiResponse<Void>> deleteAnswer(
-            @PathVariable Long questionId,
-            @PathVariable Long answerId) {
+    public ResponseEntity<ApiResponse<Void>> deleteAnswer(@PathVariable Long questionId, @PathVariable Long answerId) {
         answerService.deleteAnswer(questionId, answerId);
         return ResponseEntity.ok(ApiResponse.<Void>builder()
                 .success(true)

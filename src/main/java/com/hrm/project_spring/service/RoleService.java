@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class RoleService {
+public class    RoleService {
 
     private final RoleRepository roleRepository;
     private final PermissionRepository permissionRepository;

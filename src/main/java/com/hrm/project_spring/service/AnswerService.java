@@ -105,8 +105,6 @@ public class AnswerService{
                 throw new BadRequestException("Câu hỏi trắc nghiệm này chỉ được phép có 1 đáp án đúng.");
             }
         }
-
-
         if (currentSize + requests.size() == 4 && (existingCorrect + newCorrect == 0)) {
             throw new BadRequestException("Câu hỏi phải có ít nhất một đáp án đúng.");
         }
@@ -137,8 +135,6 @@ public class AnswerService{
         if (isDuplicate) {
             throw new BadRequestException("Nội dung đáp án này đã tồn tại trong câu hỏi.");
         }
-
-
         if (isSingleChoice(question.getQuestionType()) && request.getIsCorrect() && !Boolean.TRUE.equals(answer.getIsCorrect())) {
             boolean hasOtherCorrectAnswer = question.getAnswers().stream()
                     .anyMatch(a -> a.getIsCorrect() && !a.getId().equals(answerId));
@@ -146,7 +142,6 @@ public class AnswerService{
                 throw new BadRequestException("Câu hỏi này chỉ cho phép một đáp án đúng duy nhất.");
             }
         }
-
         answer.setContent(request.getContent().trim());
         answer.setIsCorrect(request.getIsCorrect());
 
@@ -159,8 +154,6 @@ public class AnswerService{
                 || "SINGLE_CHOICE".equalsIgnoreCase(type)
                     || "MULTIPLE_CHOICE".equalsIgnoreCase(type); // As seen in DataInitializer
     }
-
-
 
     @Transactional
     public void deleteAnswer(Long questionId, Long answerId) {

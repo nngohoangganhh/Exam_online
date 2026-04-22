@@ -18,9 +18,9 @@ public interface ExamAttemptRepository extends JpaRepository<ExamAttempt, Long> 
     Optional<ExamAttempt> findByIdAndUserId(Long attemptId, Long userId);
     Optional<ExamAttempt> findFirstByUserIdAndTestIdOrderByIdDesc(Long userId, Long testId);
     boolean existsByUserIdAndTestIdAndSubmitTimeIsNotNull(Long userId, Long testId);
-    @Query("SELECT a FROM ExamAttempt a WHERE a.test.exam.id = :examId")
+    @Query("SELECT a FROM ExamAttempt a WHERE a.test.resource.id = :examId")
     Page<ExamAttempt> findByExamId(@Param("examId") Long examId, Pageable pageable);
-    @Query("SELECT a FROM ExamAttempt a WHERE a.user.id = :userId AND a.test.exam.id = :examId")
+    @Query("SELECT a FROM ExamAttempt a WHERE a.user.id = :userId AND a.test.resource.id = :examId")
     Page<ExamAttempt> findByUserIdAndExamId(@Param("userId") Long userId,
                                              @Param("examId") Long examId,
                                              Pageable pageable);

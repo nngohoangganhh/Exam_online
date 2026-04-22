@@ -13,8 +13,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import com.hrm.project_spring.dto.result.AttemptSubmitRequest;
-import com.hrm.project_spring.dto.exam.ExamAttemptStart;
-import com.hrm.project_spring.dto.exam.ExamAttemptSubmit;
+import com.hrm.project_spring.dto.resource.ExamAttemptStart;
+import com.hrm.project_spring.dto.resource.ExamAttemptSubmit;
 
 @RestController
 @RequestMapping("/api/attempts")

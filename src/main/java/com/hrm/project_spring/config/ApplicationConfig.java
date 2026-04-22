@@ -20,10 +20,9 @@ public class ApplicationConfig {
 
     private final UserRepository userRepository;
 
-    @Bean
+     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> userRepository.findByUsername(username)
-                .map(CustomUserPrincipal::new)
+        return username -> (org.springframework.security.core.userdetails.UserDetails) userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
     @Bean
