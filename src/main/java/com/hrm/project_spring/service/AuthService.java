@@ -11,6 +11,7 @@ import com.hrm.project_spring.repository.RoleRepository;
 import com.hrm.project_spring.repository.UserRepository;
 import com.hrm.project_spring.security.JwtService;
 import com.hrm.project_spring.entity.Role;
+import com.hrm.project_spring.security.CustomUserPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -54,7 +55,7 @@ public class AuthService {
                 .status("ACTIVE")
                 .build();
         userRepository.save(user);
-        var jwtToken = jwtService.generateToken((UserDetails) user);
+        var jwtToken = jwtService.generateToken(new CustomUserPrincipal(user));
         return AuthResponse.builder()
                 .token(jwtToken)
                 .message("User registered successfully")
@@ -70,7 +71,7 @@ public class AuthService {
         );
         var user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, " USER NOT FOUND"));
-        var jwtToken = jwtService.generateToken((UserDetails) user);
+        var jwtToken = jwtService.generateToken(new CustomUserPrincipal(user));
         return AuthResponse.builder()
                 .token(jwtToken)
                 .message("User logged in successfully")
@@ -111,7 +112,7 @@ public class AuthService {
                         return userRepository.save(newUser);
                     }));
 
-            String jwtToken = jwtService.generateToken((UserDetails) user);
+            String jwtToken = jwtService.generateToken(new CustomUserPrincipal(user));
             return AuthResponse.builder()
                     .token(jwtToken)
                     .message("Đăng nhập Google thành công")

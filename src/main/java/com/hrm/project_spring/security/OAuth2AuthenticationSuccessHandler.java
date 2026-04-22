@@ -1,12 +1,9 @@
 package com.hrm.project_spring.security;
 
-import com.hrm.project_spring.entity.Role;
 import com.hrm.project_spring.entity.User;
-import com.hrm.project_spring.repository.RoleRepository;
+import com.hrm.project_spring.entity.Role;
 import com.hrm.project_spring.repository.UserRepository;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import com.hrm.project_spring.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,6 +11,9 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
 
@@ -74,7 +74,7 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
             }
         }
 
-        String token = jwtService.generateToken((UserDetails) user);
+        String token = jwtService.generateToken(new CustomUserPrincipal(user));
         
         String targetUrl = "http://localhost:3000/login?token=" + token;
         response.sendRedirect(targetUrl);
